@@ -1,4 +1,5 @@
 import os
+from os.path import exists
 import pathlib
 import shutil
 
@@ -14,7 +15,12 @@ class SomeStorageLibrary:
         if not os.path.isdir(destination):
             os.mkdir(destination)
 
+
     def load_csv(self, filename: str) -> None:
         print(f'Loading the following file to storage medium: {filename}')
-        shutil.move(filename, destination)
-        print('Load completed!')
+        if False == exists(destination + "\\" + filename):
+            shutil.move(filename, destination)
+            print('Load completed!')
+            return
+        else:
+            print("File already exists, do something about that then try again")

@@ -4,7 +4,7 @@ class FileLoader:
     def __init__(self):
         self.lines = list()
 
-    def get_columns(self, file):
+    def __get_columns(self, file):
         try:
             f = open(file, "r")
             self.lines = f.readlines()
@@ -23,7 +23,7 @@ class FileLoader:
             print("there was an issue processing the column headers")
 
     #open the data file and merge the columns to the front of it, with a little formatting
-    def merge_header(self,file):
+    def __merge_header(self,file):
         try:
             f = open(file, "r")
             #put the lines in a list to prepre for prepending headers
@@ -41,11 +41,28 @@ class FileLoader:
         except:
             print("There was a problem merging the columns with the the data")
 
+    def __validate(self,dfile):
+       try:
+        f = open(dfile,"r")
+        ls = f.readlines()
+        line = ls[0]
+        #see if we have the same amount of headers and columns
+        if(len(str(line).split("|")) != (len(str(self.lines).split("|")))):
+            print( "Error files are the wrong shape, found %i columns in header and %i, columns in the data" % ((len(str(line).split("|"))), len(str(self.lines).split("|"))))
+            return False
+        else:
+            return True
+       except:
+           print("problem validting inputs")
+
     def load_files(self, cfile,dfile):
         print("Processing headers")
-        self.get_columns(cfile)
+        self.__get_columns(cfile)
+        print("Validating files")
+        if self.__validate(dfile) != True:
+            return
         print("Mergeing headers and data")
-        self.merge_header(dfile)
+        self.__merge_header(dfile)
         print("Moveing files to destination")
         try:
             ssl = SomeStorageLibrary()
