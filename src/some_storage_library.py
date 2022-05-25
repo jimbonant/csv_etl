@@ -18,7 +18,8 @@ class SomeStorageLibrary:
 
     def load_csv(self, filename: str) -> None:
         print(f'Loading the following file to storage medium: {filename}')
-        if False == exists(destination + "\\" + filename):
+        infile = os.path.join(project_root, 'data', 'destination',filename)
+        if False == exists(infile):
             shutil.move(filename, destination)
             print('Load completed!')
             return
